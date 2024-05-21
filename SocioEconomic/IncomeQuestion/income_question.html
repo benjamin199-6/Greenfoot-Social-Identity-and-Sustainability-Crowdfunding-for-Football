@@ -1,0 +1,14 @@
+<div style="text-align:justify;">
+    You stated that your approximate annual household income is in the following range: <strong>${q://QID66/ChoiceGroup/SelectedChoices}</strong>.
+    <br>
+    Please use the slider below to indicate your exact household income within this range.
+    <br><br>
+    <div id="sliderContainer" style="display: none;">
+        <input type="range" id="exactIncomeSlider" style="width: 100%;">
+        <span id="sliderValue"></span> ECU
+    </div>
+    <div id="inputContainer" style="display: none;">
+        <input type="number" id="exactIncomeInput" placeholder="Enter your exact income" style="width: 100%;">
+        <div id="incomeError" style="color:red; display:none;">Please enter a valid income.</div>
+    </div>
+</div>
