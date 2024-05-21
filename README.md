@@ -30,7 +30,7 @@ The code is for free use and we do not guarantee that it will work.
 Please cite as:
 
 ```bibtex
-@misc{gottweis_kirchler_2022,
+@misc{gottweis_kirchler_2024,
   author = {TIMMY CASON, Gottweis, Raphael, Kirchler, Benjamin and Andrea Kollmann},
   title = {Social Identity and Sustainability Crowdfunding Survey},
   year = {2024},
