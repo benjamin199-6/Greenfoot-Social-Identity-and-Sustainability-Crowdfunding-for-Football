@@ -1,0 +1,17 @@
+#slider-container {
+    text-align: center;
+}
+
+.Skin .QuestionOuter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Skin .q-slider {
+    width: 80% !important;
+    margin: 0 auto;
+}
+
+
+
