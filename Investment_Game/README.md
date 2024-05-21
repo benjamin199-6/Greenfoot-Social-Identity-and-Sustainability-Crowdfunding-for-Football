@@ -9,7 +9,7 @@ The Investment Game simulates decision-making scenarios where participants alloc
 ### Files
 
 - `investment_game.html` - Contains the HTML structure for the investment game.
-- `investment_styles.css` - Styles specific to the investment game (Note: Currently, styles are embedded in the HTML file for simplicity).
+- `styles.css` - Styles specific to the investment game (Note: Currently, main styles are embedded in the HTML file for simplicity). This file has to be included in the LOOK and FEEL section under style external CSS ... 
 - `investment_script.js` - JavaScript to handle the logic and interactions for the investment game.
 
 ## HTML Structure
