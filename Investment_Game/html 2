@@ -1,0 +1,70 @@
+<title></title>
+<style type="text/css">body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header img {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+        }
+        .form-section {
+            padding: 20px;
+        }
+        .form-section h2 {
+            color: #003366;
+            font-size: 22px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .form-section .label {
+            display: block;
+            margin-top: 20px;
+            color: #003366;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .form-section .value {
+            margin-top: 5px;
+            color: #003366;
+            font-size: 16px;
+        }
+        .form-section .small-text {
+            margin-top: 20px;
+            color: #777;
+            font-size: 12px;
+        }
+</style>
+<div class="container">
+<div class="header"><img alt="United Nations Carbon Offset Platform Header" src="https://wumarketing.eu.qualtrics.com/CP/Graphic.php?IM=IM_8iFz3gGoKi1jHJs" /></div>
+
+<div class="form-section">
+<h2>VOLUNTARY CANCELLATION CERTIFICATE</h2>
+
+<div class="label">Project(s)</div>
+
+<div class="value" id="projects">&nbsp;</div>
+
+<div class="label">Reason for cancellation</div>
+
+<div class="value" id="reason-for-cancellation">&nbsp;</div>
+
+<div class="label">Number of units cancelled</div>
+
+<div class="value" id="units-cancelled">&nbsp;</div>
+
+<p class="small-text">Start serial number: IN-5-20-170420-3-2-0-7481<br />
+End serial number: IN-5-20-170420-3-2-0-7481</p>
+
+<p class="small-text">This certificate is issued in accordance with the procedure for voluntary cancellation in the CDM Registry. The reason indicated in this certificate is provided by the canceller.</p>
+</div>
+</div>
