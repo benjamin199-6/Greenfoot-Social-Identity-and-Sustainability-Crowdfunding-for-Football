@@ -39,4 +39,4 @@ Each income bracket is assigned a score from 1 to 10:
 - 10 = More than 100,000
 
 ## Usage
-<img width="1096" alt="Bildschirmfoto 2024-03-27 um 14 02 33" src="https://github.com/benjamin199-6/Social-Identity-and-Sustainability-Crowdfunding/assets/72379630/938799ad-4769-4ca5-b4c7-5df4ffb129d1">
+<img width="1551" alt="Income" src="https://github.com/benjamin199-6/Social-Identity-and-Sustainability-Crowdfunding/assets/72379630/2fc3a7c9-41e2-44a6-8da9-3a77a47e6800">
