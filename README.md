@@ -21,9 +21,10 @@ The code is for free use and we do not guarantee that it will work.
 
 ## Author
 
-- Benjamin Kirchler and Raphael Gottweis
+- Benjamin Kirchler, Raphael Gottweis and Andrea Kollmann
 - Email: [kirchler@energieinstitute-linz.at](mailto:kirchler@energieinstitute-linz.at)
 - Email: [raphael.gottweis@wu.ac.at](mailto:raphael.gottweis@wu.ac.at)
+
 
 ## License
 
