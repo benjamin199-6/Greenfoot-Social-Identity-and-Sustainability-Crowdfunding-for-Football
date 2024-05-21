@@ -31,7 +31,7 @@ Please cite as:
 
 ```bibtex
 @misc{gottweis_kirchler_2022,
-  author = {Gottweis, Raphael, Kirchler, Benjamin and Andrea Kollmann},
+  author = {TIMMY CASON, Gottweis, Raphael, Kirchler, Benjamin and Andrea Kollmann},
   title = {Social Identity and Sustainability Crowdfunding Survey},
   year = {2024},
   url = {https://github.com/your-repo-url},
