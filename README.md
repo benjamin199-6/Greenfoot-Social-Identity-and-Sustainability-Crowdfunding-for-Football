@@ -10,21 +10,31 @@ This project involves creating a survey to study the relationship between social
 
 The survey includes questions that explore participants' social identities and their willingness to support sustainable crowdfunding projects. The code is structured as follows:
 
-- `index.html` - The main HTML file for the survey.
-- `styles.css` - The CSS file for styling the survey.
-- `script.js` - The JavaScript file for survey logic and interactivity.
-- `qualtrics.qsf` - The Qualtrics survey file.
+- The folder `Investment Game` contains the code (HTML, CSS, JavaScript) for the main experiment.
+- The folder `Socio Economics` contains the code for the income question.
+- The folder `Norms` contains the modified code for the norm elicitation task developed by Dimant (2022).
+- `qualtrics.qsf` - The complete Qualtrics survey file.
 
 ## Usage
 
-1. Open `index.html` in a web browser to view the survey.
-2. Ensure that the `styles.css` and `script.js` files are correctly linked if you are hosting the survey on a server.
+The code is for free use and we do not guarantee that it will work.
 
 ## Author
 
-- Your Name
-- Contact Information
+- Benjamin Kirchler and Raphael Gottweis
+- Email: [kirchler@energieinstitute-linz.at](mailto:kirchler@energieinstitute-linz.at)
+- Email: [raphael.gottweis@wu.ac.at](mailto:raphael.gottweis@wu.ac.at)
 
 ## License
 
-Include any licensing information here if necessary.
+Please cite as:
+
+```bibtex
+@misc{gottweis_kirchler_2022,
+  author = {Gottweis, Raphael, Kirchler, Benjamin and Andrea Kollmann},
+  title = {Social Identity and Sustainability Crowdfunding Survey},
+  year = {2024},
+  url = {https://github.com/your-repo-url},
+  note = {Qualtrics survey code for studying social identity and sustainability in crowdfunding.}
+}
+
