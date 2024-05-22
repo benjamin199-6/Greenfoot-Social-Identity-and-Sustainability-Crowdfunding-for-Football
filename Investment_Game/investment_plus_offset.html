@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 20px;
+            color: rgb(44, 62, 80);
+            text-align: center;
+        }
+        p, ul, table {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 8px 0;
+        }
+        .summary {
+            margin-top: 20px;
+        }
+        .slider-container {
+            margin-top: 20px;
+        }
+        .slider-container input[type="range"] {
+            width: 100%;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .small-container {
+            font-size: 12px;
+            padding: 10px;
+            max-width: 600px;
+            text-align: left;
+        }
+        .project-table {
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%; /* Adjust the width as needed */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .project-table th, .project-table td {
+            padding: 10px;
+        }
+    </style>
+    <script>
+        function updateSummary() {
+            var investment = document.getElementById("investmentSliderUnique").value;
+            var kept = (3 - investment).toFixed(2);
+            var successfulReturn = (investment * 2).toFixed(2);
+            var unsuccessfulReturn = investment;
+            var keptAmount = (kept * 1.5).toFixed(2);
+
+            document.getElementById("investmentAmountUnique").innerText = investment;
+            document.getElementById("keptAmountUnique").innerText = kept;
+            document.getElementById("successfulReturnUnique").innerText = successfulReturn;
+            document.getElementById("unsuccessfulReturnUnique").innerText = unsuccessfulReturn;
+            document.getElementById("amountKeptUnique").innerText = keptAmount;
+
+            // Save the slider value to embedded data
+            Qualtrics.SurveyEngine.setEmbeddedData('Investment1', investment);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            updateSummary();
+        });
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Carbon Offsetting Project for ${q://QID2/ChoiceGroup/SelectedChoices}</h2>
+
+    <table class="project-table">
+        <tr>
+            <th>Threshold</th>
+            <td>15£</td>
+        </tr>
+        <tr>
+            <th>Successful Project</th>
+            <td>You get: 200%</td>
+        </tr>
+        <tr>
+            <th>Not Successful Project</th>
+            <td>100%, no bonus case</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="small-container">
+                    <div class="header">
+                        <img alt="United Nations Carbon Offset Platform Header" src="https://wumarketing.eu.qualtrics.com/CP/Graphic.php?IM=IM_8iFz3gGoKi1jHJs" style="width: 100%; border-radius: 10px 10px 0 0;" />
+                    </div>
+
+                    <div class="form-section">
+                        <h2 style="font-size: 14px;">VOLUNTARY CANCELLATION CERTIFICATE</h2>
+
+                        <div class="label" style="font-size: 14px;">Reason for cancellation</div>
+                        <div class="value" style="font-size: 12px;"><strong style='color: #007BFF;'>We as a group of fans of ${q://QID2/ChoiceGroup/SelectedChoices} offsetting 10 tons of carbon-related emissions associated with ${q://QID2/ChoiceGroup/SelectedChoices}'s traveling behavior.</strong></div>
+
+                        <p class="small-text" style="font-size: 10px;">&nbsp;</p> <!-- Empty paragraph for spacing -->
+
+                        <p class="small-text" style="font-size: 10px;">This certificate is issued in accordance with the procedure for voluntary cancellation in the CDM Registry. The reason indicated in this certificate is provided by the canceller.</p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    <p>Use the slider below to indicate how much of the £3 you want to invest. Observe the outcomes based on your investment.</p>
+
+    <div class="slider-container">
+        <label for="investmentSliderUnique">Investment (£):</label>
+        <input type="range" id="investmentSliderUnique" name="investmentSliderUnique" min="0" max="3" step="0.01" value="0" oninput="updateSummary()">
+        <p>Investment Amount: £<span id="investmentAmountUnique">0</span></p>
+        <p>Kept Amount: £<span id="keptAmountUnique">3.00</span></p>
+    </div>
+
+    <div class="summary">
+        <h2>Summary of Your Decision</h2>
+        <table>
+            <thead>
+                <tr style="border-bottom: 2px solid #bdc3c7;">
+                    <th>Outcome</th>
+                    <th>Amount (£)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom: 1px solid #bdc3c7;">
+                    <td>Successful Investment Return</td>
+                    <td id="successfulReturnUnique">0.00</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #bdc3c7;">
+                    <td>Unsuccessful Investment Refund</td>
+                    <td id="unsuccessfulReturnUnique">0.00</td>
+                </tr>
+                <tr>
+                    <td>Amount Kept</td>
+                    <td id="amountKeptUnique">4.50</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
