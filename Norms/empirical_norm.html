@@ -1,17 +1,29 @@
-<div style="text-align:justify;">We asked other participants <u>what they believe</u>&nbsp;that the <strong>other 9 group members invested</strong> in the <b>project</b>. What do you believe was the most common answer?</div>
+<div style="text-align:justify; font-size:16px;">
+    How much do you think the other 9 group members invested in the project?&nbsp;
+</div>
 
-<div style="text-align:justify;">&nbsp;</div>
+<div style="text-align:justify; font-size:16px;">
+    &nbsp;
+</div>
 
-<div style="text-align:justify;"><span style="font-size:16px;">You can allocate up to 10 points to an option by clicking on the plus and minus buttons below to indicate your guess. <strong>The more likely you think one option is, the more points you would allocate to it.</strong> <strong>Your guesses need to add up to 10</strong>. </span></div>
+<div style="text-align:justify; font-size:16px;">
+    Below you see different investment categories. You can allocate up to 9 points to a category by clicking on the plus and minus buttons. If you think that one of the 9 team members has invested the amount written above the category, you should allocate one point. 
+    <strong> Hence, the more likely an option is, the more points you should allocate to it.</strong> <strong>Your total should add up to 9 points.</strong>
+    <br>
+</div>
 <br>
-The 9 other group members invested...
-<div id="targetdiv">&nbsp;</div>
-&nbsp;
 
-<div id="BallsAllocated">&nbsp;</div>
+<div style="text-align:justify; font-size:16px;">
+    The other 9 team members actually invested... 
+</div>
+<div id="targetDiv1"></div>
+<br>
+<b><div id="ballsAllocated1" style="font-size:16px;"></div></b>
 
-<div id="bounds" style="margin-top: 20px;">&nbsp;</div>
-
-<div id="averageGuessContainer" style="margin-top: 20px;"><label for="averageGuess">According to your guess, your value is between and . What do you think is the average? </label> <input id="averageGuess" name="averageGuess" step="0.01" style="width: 100%;" type="range">
-<div id="averageError" style="color:red; display:none;">Please enter a value within the calculated range.</div>
+<div style="margin-top: 20px; font-size:16px;" id="bounds1"></div>
+<div id="averageGuessContainer1" style="margin-top: 20px; font-size:16px;">
+    <label for="averageGuess1">According to your choices, the total amount invested is between <span id="lowerBound1"></span> and <span id="upperBound1"></span>. What do you think is the exact total team investment? </label>
+    <input style="width: 100%;" step="1" name="averageGuess1" id="averageGuess1" type="range">
+    <span id="averageGuessValue1"></span>
+    <div style="color:red; display:none;" id="averageError1">Please enter a value within the calculated range.</div>
 </div>
