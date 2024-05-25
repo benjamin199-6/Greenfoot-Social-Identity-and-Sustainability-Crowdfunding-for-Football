@@ -8,7 +8,8 @@ The Investment Game simulates decision-making scenarios where participants alloc
 
 ### Files
 
-- `investment_game.html` - Contains the HTML structure for the investment game.
+- `investment_game_.html` - Contains the HTML structure for the investment game used in the study Crowdfunding Sustainability by Gottweis, Kirchler and Kollmann (2024). 
+- `investment_game_generic.html` - Contains the HTML structure for the investment game.
 - `styles.css` - Styles specific to the investment game (Note: Currently, main styles are embedded in the HTML file for simplicity). This file has to be included in the LOOK and FEEL section under style external CSS ... 
 - `investment_script.js` - JavaScript to handle the logic and interactions for the investment game.
 
@@ -16,11 +17,17 @@ The Investment Game simulates decision-making scenarios where participants alloc
 
 ### investment_game.html
 
+ A slider for participants to choose their investment amount.
+- Real-time updates of investment, kept amount, and potential returns.
+- Descriptions and details of the investment scenario (Carbon Offsetting) 
+
+
+### investment_game_generic.html
+
 This file includes the structure and layout of the investment game. Key components include:
 
 - A slider for participants to choose their investment amount.
 - Real-time updates of investment, kept amount, and potential returns.
-- Descriptions and details of the investment scenario.
 
 ## JavaScript Logic
 
