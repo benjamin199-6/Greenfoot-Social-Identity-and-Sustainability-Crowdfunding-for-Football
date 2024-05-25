@@ -2,6 +2,9 @@
 
 This folder contains the code for the Investment Game section of the survey.
 
+<img width="943" alt="image" src="https://github.com/benjamin199-6/Social-Identity-and-Sustainability-Crowdfunding/assets/72379630/db6ea661-6755-459f-b71a-a2309eb3287b">
+
+
 ## Description
 
 The Investment Game simulates decision-making scenarios where participants allocate funds into different investment options. The game uses a slider to determine how much of the 60 ECU the participant wants to invest. The returns are calculated based on whether the investment threshold is reached or not.
