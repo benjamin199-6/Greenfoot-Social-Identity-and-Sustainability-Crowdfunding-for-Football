@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carbon Offset Project for ${q://QID2/ChoiceGroup/SelectedChoices}</title>
+    <title>Investment Game</title>
     <style>
+        /* Basic styles for the body and container */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -13,7 +14,7 @@
         }
         .container {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0; /* Light grey background */
+            background-color: #f0f0f0;
             padding: 20px;
             border-radius: 10px;
             max-width: 800px;
@@ -37,94 +38,184 @@
             width: 100%;
             border-collapse: collapse;
         }
-        td {
+        td, th {
             padding: 8px 0;
+        }
+        th {
+            text-align: left;
         }
         .summary {
             margin-top: 20px;
         }
         .slider-container {
             margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         .slider-container input[type="range"] {
-            width: 100%;
+            width: 60%;
+        }
+        .slider-value {
+            font-size: 16px;
+            color: #2c3e50;
         }
         .disabled {
             pointer-events: none;
             opacity: 0.5;
         }
+        .small-container {
+            font-size: 12px;
+            padding: 10px;
+            max-width: 600px;
+            text-align: left;
+        }
+        .project-table {
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .project-table th, .project-table td {
+            padding: 10px;
+        }
     </style>
+    <script>
+        /**
+         * Function to update the summary based on the investment slider value.
+         * Calculates and updates the values displayed in the summary section.
+         */
+        function updateSummary() {
+            var investment = document.getElementById("investmentSliderUnique").value;
+            var kept = (300 - investment);
+            var successfulReturn = (investment * 2).toFixed(2);
+            var unsuccessfulReturn = (investment * 1).toFixed(2);
+            var keptAmount = (kept * 1.5).toFixed(2);
+
+            document.getElementById("investmentAmountUnique").innerText = investment;
+            document.getElementById("keptAmountUnique").innerText = kept;
+            document.getElementById("successfulReturnUnique").innerText = successfulReturn;
+            document.getElementById("unsuccessfulReturnUnique").innerText = unsuccessfulReturn;
+            document.getElementById("amountKeptUnique").innerText = keptAmount;
+
+            document.getElementById("successfulPercentage").innerText = "200%";
+            document.getElementById("unsuccessfulPercentage").innerText = "100%";
+            document.getElementById("keptPercentage").innerText = "150%";
+
+            document.getElementById("successfulCO2").innerText = "Yes";
+            document.getElementById("unsuccessfulCO2").innerText = "No";
+            document.getElementById("keptCO2").innerText = "";
+
+            // Save the slider value to embedded data
+            Qualtrics.SurveyEngine.setEmbeddedData('Investment1', investment);
+            // Set additional embedded data
+            Qualtrics.SurveyEngine.setEmbeddedData('Bonus1', 0);
+            Qualtrics.SurveyEngine.setEmbeddedData('Threshold1', 'high');
+            Qualtrics.SurveyEngine.setEmbeddedData('Condition', 'Football-Club');
+            Qualtrics.SurveyEngine.setEmbeddedData('Round', 1);
+        }
+
+        /**
+         * Event listener to update the summary when the document is fully loaded.
+         */
+        document.addEventListener("DOMContentLoaded", function() {
+            updateSummary();
+        });
+    </script>
 </head>
 <body>
 
 <div class="container">
-    <h2>Carbon Offset Project for ${q://QID2/ChoiceGroup/SelectedChoices}</h2>
-    <p>Use the slider below to indicate how much of the 60 ECU you want to invest. You keep 150% of every ECU you do not invest. Together with 9 other participants who support <strong>${q://QID2/ChoiceGroup/SelectedChoices}</strong>, you have the opportunity to fund a project that offsets CO2 emissions related to the travel activities of <strong>${q://QID2/ChoiceGroup/SelectedChoices}</strong>. The following properties describe the details of the investment:</p>
+    <h2>Carbon Offsetting Project for ${q://QID2/ChoiceGroup/SelectedChoices}</h2>
 
-    <div style="padding: 15px; border-bottom: 2px solid #bdc3c7;">
-        <table style="width: 100%; border-collapse: collapse; font-size: 14px; color: #2c3e50;">
-            <tbody>
-                <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td colspan="2" style="padding: 8px 0px; text-align: center;"><strong>Carbon Offset Project for ${q://QID2/ChoiceGroup/SelectedChoices}</strong></td>
-                </tr>
-                <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td style="padding: 8px 0;">Threshold Value</td>
-                    <td style="text-align: right; padding: 8px 0;"><strong>300 ECU</strong></td>
-                </tr>
-                <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td style="padding: 8px 0;">Investor Pool</td>
-                    <td style="text-align: right; padding: 8px 0;"><strong>10 Participants</strong></td>
-                </tr>
-                <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td style="padding: 8px 0;">Return if Project reaches threshold</td>
-                    <td style="text-align: right; padding: 8px 0;"><strong style="color: black;">200% of invested ECU + Offset (see below)</strong></td>
-                </tr>
-                <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td colspan="2" style="padding: 8px 0; text-align: center;">Publicly visible reason of cancellation:<br>"We as a group of fans of <strong>${q://QID2/ChoiceGroup/SelectedChoices}</strong> are offsetting 10 tons of carbon-related emissions associated with <strong>${q://QID2/ChoiceGroup/SelectedChoices}</strong>'s traveling behavior."</td>
-                </tr>
-                <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td style="padding: 8px 0;">Return if Project does not reach threshold</td>
-                    <td style="text-align: right; padding: 8px 0;"><strong style="color: black;">100% of invested ECU</strong></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="project-table">
+        <tr>
+            <th><strong style='color: #D31313;'>Threshold</strong></th>
+            <td><strong style='color: #D31313;'>1500 pence</strong></td>
+        </tr>
+        <tr>
+            <th>Team</th>
+            <td>10 ${q://QID2/ChoiceGroup/SelectedChoices} fans</td>
+        </tr>
+        <tr>
+            <th>Threshold not met</th>
+            <td>You get: <strong style='color: #D31313;'>100%, no bonus case</strong></td>
+        </tr>
+        <tr>
+            <th>Threshold met</th>
+            <td>You get: <strong>200%</strong></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="small-container">
+                    <div class="header">
+                        <img alt="United Nations Carbon Offset Platform Header" src="https://wumarketing.eu.qualtrics.com/CP/Graphic.php?IM=IM_8iFz3gGoKi1jHJs" style="width: 100%; border-radius: 10px 10px 0 0;" />
+                    </div>
+
+                    <div class="form-section">
+                        <h2 style="font-size: 14px;">VOLUNTARY CANCELLATION CERTIFICATE</h2>
+
+                        <div class="label" style="font-size: 14px;">Reason for cancellation</div>
+                        <div class="value" style="font-size: 14px;">
+                            <strong style='color: #007BFF;'>We as a group of fans of ${q://QID2/ChoiceGroup/SelectedChoices} are offsetting traveling related carbon emissions associated with ${q://QID2/ChoiceGroup/SelectedChoices}.</strong>
+                        </div>
+
+                        <p class="small-text" style="font-size: 10px;">&nbsp;</p> 
+
+                        <p class="small-text" style="font-size: 10px;">This certificate is issued in accordance with the procedure for voluntary cancellation in the CDM Registry. The reason indicated in this certificate is provided by the canceller.</p>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <p class="small-text" style="font-size: 10px;">&nbsp;</p> 
+    <p class="small-text" style="font-size: 10px;">&nbsp;</p> 
+    
+    <p>Use the slider below to indicate how much of the 300 pence you want to invest. Observe the outcomes based on your investment.</p>
 
     <div class="slider-container">
-        <label for="investmentSlider">Investment (ECU):</label>
-        <input id="investmentSlider" max="60" min="0" name="investmentSlider" type="range" value="0" oninput="updateSummary()">
-        <p>Investment Amount: <span id="investmentAmount">0</span> ECU</p>
-        <p>Kept Amount: <span id="keptAmount">60</span> ECU</p>
+        <span class="slider-value">Amount Kept: <span id="keptAmountUnique">300</span>p</span>
+        <input type="range" id="investmentSliderUnique" name="investmentSliderUnique" min="0" max="300" step="1" value="0" oninput="updateSummary()">
+        <span class="slider-value">Investment Amount: <span id="investmentAmountUnique">0</span>p</span>
     </div>
 
     <div class="summary">
-        <h2>Summary of Your Decision</h2>
         <table>
             <thead>
                 <tr style="border-bottom: 2px solid #bdc3c7;">
-                    <th>Outcome</th>
-                    <th>Amount (ECU)</th>
+                    <th>Outcome if</th>
+                    <th>Amount (p)</th>
+                    <th>Return Rate</th>
+                    <th>CO2 Offset</th>
                 </tr>
             </thead>
             <tbody>
                 <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td>Investment Return if Threshold Reached (+ Offset)</td>
-                    <td id="successfulReturn">0</td>
+                    <td>Threshold met</td>
+                    <td id="successfulReturnUnique">0</td>
+                    <td id="successfulPercentage">200%</td>
+                    <td id="successfulCO2">Yes</td>
                 </tr>
                 <tr style="border-bottom: 1px solid #bdc3c7;">
-                    <td>Investment Refund if Threshold Not Reached</td>
-                    <td id="unsuccessfulReturn">0</td>
+                    <td>Threshold not met</td>
+                    <td id="unsuccessfulReturnUnique">0</td>
+                    <td id="unsuccessfulPercentage">100%</td>
+                    <td id="unsuccessfulCO2">No</td>
                 </tr>
                 <tr>
-                    <td>Amount Kept * 150%</td>
-                    <td id="amountKept">0</td>
+                    <td>Amount Kept</td>
+                    <td id="amountKeptUnique">450</td>
+                    <td id="keptPercentage">150%</td>
+                    <td id="keptCO2"></td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
-
-<script src="investment_script.js"></script>
 
 </body>
 </html>
