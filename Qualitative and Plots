@@ -1,0 +1,1058 @@
+
+setwd("/Users/benjamin/Downloads")
+
+library(haven)
+library(dplyr)
+library(readr)
+
+data=read_sav("Greenfoot_Survey_FullSample (1).sav")
+
+
+
+data <- data %>%
+  mutate(ID = row_number())
+# Assuming your data is in a data frame called `data`
+
+# Convert investment columns to numeric and replace NA with 0
+data$Investment1 <- as.numeric(data$Investment1)
+data$Investment1[is.na(data$Investment1)] <- 0
+
+data$Investment2 <- as.numeric(data$Investment2)
+data$Investment2[is.na(data$Investment2)] <- 0
+
+data$Investment3 <- as.numeric(data$Investment3)
+data$Investment3[is.na(data$Investment3)] <- 0
+
+data$Investment4 <- as.numeric(data$Investment4)
+data$Investment4[is.na(data$Investment4)] <- 0
+
+
+# Create group composition variable based on Treatment
+data$Condition=as.factor(data$Condition)
+data <- data %>% mutate(Treatment_new = ifelse(Treatment == "Control-Small", "Neutral-Random", Treatment))
+
+data$Treatment_new=as.factor(data$Treatment_new)
+
+
+data <- data %>%
+  mutate(
+    GroupComposition = ifelse(grepl("Club", Treatment_new), 1, ifelse(grepl("Random", Treatment_new), 0, NA)),
+    ProjectType = ifelse(grepl("Football", Treatment_new), 1, ifelse(grepl("Neutral", Treatment_new), 0, NA))
+  )
+
+data$GroupComposition=as.factor(data$GroupComposition)
+data$ProjectType=as.factor(data$ProjectType)
+data$Treatment_new <- relevel(factor(data$Treatment_new), ref = "Neutral-Random")
+
+
+names(data)
+
+
+
+
+# Rename the columns using dplyr
+data <- data %>%
+  rename(
+    Consent = Q61,                                           # Please consent to the processing of your data
+    AttentionCheck_VeryInterested = Q62_4,                   # Attention Check: Very Interested
+    AttentionCheck_NeverHeardOfIt = Q62_7,                   # Attention Check: Never Heard Of It
+    HouseholdIncome = Household_Income,                      # Household Income
+    AreaOfResidence = Q75,                                   # Area of Residence
+    EducationLevel = Q285,                                   # Highest Level of Education
+    InterestInFootball = Interest_in_Football,               # Interest in Football
+    FavoriteFootballTeam = Q1,                               # Favorite Football Team
+    Comprehension_CO2Offset = Comprehension_2,               # Comprehension: CO2 Offset
+    Comprehension_Payoff = Comprehension_1,                  # Comprehension: Payoff
+    GroupMembersCount = Q292,                                # Group Members Count
+    UnderstandingInstructions = Q92,                         # Understanding Instructions
+    CO2Offset_Question = Q218,                               # CO2 Offset Question
+    Payoff_Question = Q220,                                  # Payoff Question
+    MembersCount_UKPremiereLeagueFans = Q297,                # Members Count: UK Premiere League Fans
+    UnderstandingInstructions_UKPremiereLeague = Q223,       # Understanding Instructions: UK Premiere League
+    NeutralRandomInstr_CO2Offset = Neutral_Random_Instr,     # Neutral Random Instruction: CO2 Offset
+    NeutralRandomInstr_Payoff = Q241,                        # Neutral Random Instruction: Payoff
+    GroupMembersCount_Participants = Q300,                   # Group Members Count: Participants
+    UnderstandingInstructions_Participants = Q244,           # Understanding Instructions: Participants
+    NeutralClubInstr_CO2Offset = Neutral_Club_Instruc,       # Neutral Club Instruction: CO2 Offset
+    NeutralClubInstr_Payoff = Q262,                          # Neutral Club Instruction: Payoff
+    GroupMembersCount_DifferentUKPremiereLeagueFans = Q304,  # Group Members Count: Different UK Premiere League Fans
+    UnderstandingInstructions_DifferentUKPremiereLeagueFans = Q265,  # Understanding Instructions: Different UK Premiere League Fans
+    SimilarityToGroupMembers = Q50,                          # Similarity to Group Members
+    WillingnessToTakeRisks = Q196,                           # Willingness to Take Risks
+    WillingnessToContributeIncome = Q96,                     # Willingness to Contribute Income
+    Concern_ClimateChange = Q86,                             # Concern about Climate Change
+    Importance_SavingEnergy = Q276_1,                        # Importance of Saving Energy
+    Importance_FootballClubsEnergyEfficiency = Q276_2,       # Importance of Football Clubs' Energy Efficiency
+    Importance_ClubLeadershipInSustainability = Q276_3,      # Importance of Club Leadership in Sustainability
+    Awareness_ClubEnergyEfficiencyInitiatives = Q277_1,      # Awareness of Club's Energy Efficiency Initiatives
+    Awareness_ClubConsideringEnergyMeasures = Q277_2,        # Awareness of Club Considering Energy Measures
+    ParticipationInCrowdfunding = Q278,                      # Participation in Crowdfunding
+    LikelihoodToSupport_CrowdfundingEnergyProjects = Q279_1, # Likelihood to Support Crowdfunding Energy Projects
+    LikelihoodToInvest_ClubEnergyProjects = Q279_2,          # Likelihood to Invest in Club Energy Projects
+    LikelihoodToParticipate_CrowdfundingCampaign = Q279_3,   # Likelihood to Participate in Crowdfunding Campaign
+    Concern_MismanagementOfFunds = Q280_1,                   # Concern about Mismanagement of Funds
+    Concern_LackOfTransparency = Q280_2,                     # Concern about Lack of Transparency
+    Concern_InsufficientProjectInformation = Q280_3,         # Concern about Insufficient Project Information
+    Concern_FinancialRisk = Q280_4,                          # Concern about Financial Risk
+    Concern_Other = Q280_5,                                  # Other Concerns
+    OtherConcerns_Text = Q280_5_TEXT,                        # Other Concerns Text
+    Agreement_SenseOfCommunity = Q281_1,                     # Agreement: Sense of Community
+    Agreement_FanEngagementCrowdfunding = Q281_2,            # Agreement: Fan Engagement in Crowdfunding
+    Score = SC0,                                             # Score
+    PROLIFIC_PID = PROLIFIC_PID,                             # PROLIFIC_PID
+    Keep = Keep,                                             # Keep
+    Investment1 = Investment1,                               # Investment1
+    Investment2 = Investment2,                               # Investment2
+    Investment3 = Investment3,                               # Investment3
+    Investment4 = Investment4,                               # Investment4
+    Belief1 = Belief1,                                       # Belief1
+    Belief2 = Belief2,                                       # Belief2
+    Belief3 = Belief3,                                       # Belief3
+    Belief4 = Belief4,                                       # Belief4
+    Threshold1 = Threshold1,                                 # Threshold1
+    Threshold2 = Threshold2,                                 # Threshold2
+    Threshold3 = Threshold3,                                 # Threshold3
+    Threshold4 = Threshold4,                                 # Threshold4
+    Create_New_Field_or_Choose_From_Dropdown = Create_New_Field_or_Choose_From_Dropdown..., # Create New Field or Choose From Dropdown...
+    Bonus1 = Bonus1,                                         # Bonus1
+    Bonus2 = Bonus2,                                         # Bonus2
+    Bonus3 = Bonus3,                                         # Bonus3
+    Bonus4 = Bonus4,                                         # Bonus4
+    AverageGuess1 = AverageGuess1,                           # AverageGuess1
+    AverageGuess2 = AverageGuess2,                           # AverageGuess2
+    AverageGuess3 = AverageGuess3,                           # AverageGuess3
+    AverageGuess4 = AverageGuess4,                           # AverageGuess4
+    Treatment = Treatment,                                   # Treatment
+    Round = Round,                                           # Round
+    Condition = Condition,                                   # Condition
+    AverageGuess = averageGuess,                             # averageGuess
+    EmpiricalBelief1 = EmpiricalBelief1,                     # EmpiricalBelief1
+    NormBelief1 = NormBelief1,                               # NormBelief1
+    Treatment_new = Treatment_new,                           # Treatment_new
+    GroupComposition = GroupComposition,                     # GroupComposition
+    ProjectType = ProjectType                                # ProjectType
+  )
+
+# Calculate means and standard errors
+grouped_data <- data %>%
+  group_by(GroupComposition, ProjectType) %>%
+  summarise(
+    Mean_Investment1 = mean(Investment1),
+    SE_Investment1 = sd(Investment1) / sqrt(n()),
+    Mean_Investment2 = mean(Investment2),
+    SE_Investment2 = sd(Investment2) / sqrt(n()),
+    Mean_Investment3 = mean(Investment3),
+    SE_Investment3 = sd(Investment3) / sqrt(n()),
+    Mean_Investment4 = mean(Investment4),
+    SE_Investment4 = sd(Investment4) / sqrt(n())
+  )
+
+
+# Reshape the data for plotting
+grouped_data_long <- grouped_data %>%
+  tidyr::pivot_longer(
+    cols = starts_with("Mean_Investment"),
+    names_to = "Investment_Type",
+    values_to = "Mean"
+  ) %>%
+  mutate(
+    SE = case_when(
+      Investment_Type == "Mean_Investment1" ~ SE_Investment1,
+      Investment_Type == "Mean_Investment2" ~ SE_Investment2,
+      Investment_Type == "Mean_Investment3" ~ SE_Investment3,
+      Investment_Type == "Mean_Investment4" ~ SE_Investment4
+    )
+  )
+
+library(ggplot2)
+
+data$AverageGuess1=as.numeric(data$AverageGuess1)
+data$AverageGuess2=as.numeric(data$AverageGuess2)
+data$AverageGuess3=as.numeric(data$AverageGuess3)
+data$AverageGuess4=as.numeric(data$AverageGuess4)
+# Plot the data
+ggplot(grouped_data_long, aes(x = Investment_Type, y = Mean, fill = interaction(GroupComposition, ProjectType))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = Mean - SE, ymax = Mean + SE), width = 0.2, position = position_dodge(0.9)) +
+  labs(title = "Mean Investments by Group Composition and Project Type",
+       x = "Investment Type",
+       y = "Mean Investment",
+       fill = "Group Composition and Project Type") +
+  theme_minimal()
+
+
+# Calculate means and standard errors for Investments and AverageGuesses
+grouped_data <- data %>%
+  group_by(GroupComposition, ProjectType) %>%
+  summarise(
+    Mean_Investment1 = mean(Investment1, na.rm = TRUE),
+    SE_Investment1 = sd(Investment1, na.rm = TRUE) / sqrt(n()),
+    Mean_Investment2 = mean(Investment2, na.rm = TRUE),
+    SE_Investment2 = sd(Investment2, na.rm = TRUE) / sqrt(n()),
+    Mean_Investment3 = mean(Investment3, na.rm = TRUE),
+    SE_Investment3 = sd(Investment3, na.rm = TRUE) / sqrt(n()),
+    Mean_Investment4 = mean(Investment4, na.rm = TRUE),
+    SE_Investment4 = sd(Investment4, na.rm = TRUE) / sqrt(n()),
+    Mean_AverageGuess1 = mean(AverageGuess1, na.rm = TRUE) / 10,
+    SE_AverageGuess1 = (sd(AverageGuess1, na.rm = TRUE) / sqrt(n())) / 10,
+    Mean_AverageGuess2 = mean(AverageGuess2, na.rm = TRUE) / 10,
+    SE_AverageGuess2 = (sd(AverageGuess2, na.rm = TRUE) / sqrt(n())) / 10,
+    Mean_AverageGuess3 = mean(AverageGuess3, na.rm = TRUE) / 10,
+    SE_AverageGuess3 = (sd(AverageGuess3, na.rm = TRUE) / sqrt(n())) / 10,
+    Mean_AverageGuess4 = mean(AverageGuess4, na.rm = TRUE) / 10,
+    SE_AverageGuess4 = (sd(AverageGuess4, na.rm = TRUE) / sqrt(n())) / 10
+  )
+
+# Reshape the data for plotting
+grouped_data_long <- grouped_data %>%
+  tidyr::pivot_longer(
+    cols = starts_with("Mean_"),
+    names_to = "Variable",
+    values_to = "Mean"
+  ) %>%
+  mutate(
+    SE = case_when(
+      Variable == "Mean_Investment1" ~ SE_Investment1,
+      Variable == "Mean_Investment2" ~ SE_Investment2,
+      Variable == "Mean_Investment3" ~ SE_Investment3,
+      Variable == "Mean_Investment4" ~ SE_Investment4,
+      Variable == "Mean_AverageGuess1" ~ SE_AverageGuess1,
+      Variable == "Mean_AverageGuess2" ~ SE_AverageGuess2,
+      Variable == "Mean_AverageGuess3" ~ SE_AverageGuess3,
+      Variable == "Mean_AverageGuess4" ~ SE_AverageGuess4
+    ),
+    Variable = recode(Variable,
+                      "Mean_Investment1" = "Investment1",
+                      "Mean_Investment2" = "Investment2",
+                      "Mean_Investment3" = "Investment3",
+                      "Mean_Investment4" = "Investment4",
+                      "Mean_AverageGuess1" = "AverageGuess1",
+                      "Mean_AverageGuess2" = "AverageGuess2",
+                      "Mean_AverageGuess3" = "AverageGuess3",
+                      "Mean_AverageGuess4" = "AverageGuess4")
+  )
+
+# Plot the data
+ggplot(grouped_data_long, aes(x = Variable, y = Mean, fill = interaction(GroupComposition, ProjectType))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_errorbar(aes(ymin = Mean - SE, ymax = Mean + SE), width = 0.2, position = position_dodge(0.9)) +
+  labs(title = "Mean Investments and Average Guesses by Group Composition and Project Type",
+       x = "Variable",
+       y = "Mean",
+       fill = "Group Composition and Project Type") +
+  theme_minimal()
+
+
+# Combine the columns into a single variable
+data <- data %>%
+  mutate(GroupMembersCount_new = coalesce(GroupMembersCount, MembersCount_UKPremiereLeagueFans, GroupMembersCount_Participants, GroupMembersCount_DifferentUKPremiereLeagueFans))
+
+# Convert GroupMembersCount to a factor with specified labels
+data <- data %>%
+  mutate(GroupMembersCount_new = factor(GroupMembersCount_new, levels = c(1, 2, 3), labels = c("8 participants", "9 participants", "10 participants")))
+
+
+table(data$GroupMembersCount_new)
+# Drop the original columns if you no longer need them
+data <- data %>%
+  select(-GroupMembersCount, -MembersCount_UKPremiereLeagueFans, -GroupMembersCount_Participants, -GroupMembersCount_DifferentUKPremiereLeagueFans)
+
+
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+
+# Filter and reshape the data
+filtered_data <- data %>%
+  select(Treatment, SimilarityToGroupMembers, Importance_SavingEnergy, 
+         Importance_FootballClubsEnergyEfficiency, Importance_ClubLeadershipInSustainability, 
+         Awareness_ClubEnergyEfficiencyInitiatives, Awareness_ClubConsideringEnergyMeasures, 
+         LikelihoodToSupport_CrowdfundingEnergyProjects, LikelihoodToInvest_ClubEnergyProjects, 
+         LikelihoodToParticipate_CrowdfundingCampaign, Agreement_SenseOfCommunity, 
+         Agreement_FanEngagementCrowdfunding) %>%
+  pivot_longer(
+    cols = -Treatment,
+    names_to = "Question",
+    values_to = "Response"
+  )
+
+# Define labels for the questions
+question_labels <- c(
+  SimilarityToGroupMembers = "Similarity to other group members",
+  Importance_SavingEnergy = "Importance of saving energy",
+  Importance_FootballClubsEnergyEfficiency = "Importance of football clubs' energy efficiency",
+  Importance_ClubLeadershipInSustainability = "Importance of club leadership in sustainability",
+  Awareness_ClubEnergyEfficiencyInitiatives = "Awareness of club's energy efficiency initiatives",
+  Awareness_ClubConsideringEnergyMeasures = "Awareness of club considering energy measures",
+  LikelihoodToSupport_CrowdfundingEnergyProjects = "Likelihood to support crowdfunding for energy projects",
+  LikelihoodToInvest_ClubEnergyProjects = "Likelihood to invest in club energy projects",
+  LikelihoodToParticipate_CrowdfundingCampaign = "Likelihood to participate in a crowdfunding campaign",
+  Agreement_SenseOfCommunity = "Agreement: Sense of community",
+  Agreement_FanEngagementCrowdfunding = "Agreement: Fan engagement enhances community"
+)
+
+# Update the labels in the data
+filtered_data <- filtered_data %>%
+  mutate(Question = recode(Question, !!!question_labels))
+
+# Create bar plots grouped by Treatment and display them one after the other
+questions <- unique(filtered_data$Question)
+
+for (question in questions) {
+  plot_data <- filtered_data %>%
+    filter(Question == question)
+  
+  p <- ggplot(plot_data, aes(x = Response, fill = Treatment)) +
+    geom_bar(position = "dodge") +
+    labs(title = question,
+         x = "Response",
+         y = "Count",
+         fill = "Treatment") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  print(p)
+}
+
+
+
+table(data$SimilarityToGroupMembers)
+
+
+# Transform the data into a long format for investments
+long_data <- data %>%
+  pivot_longer(
+    cols = starts_with("Investment"),
+    names_to = "Investment_Type",
+    values_to = "Investment_Amount"
+  )
+
+
+data$Treatment=as.factor(data$Treatment)
+table(data$InterestInFootball,data$Sex)
+filtered_data=data %>% filter(Sex=="Female")
+names(filtered_data)
+
+
+data$FavoriteFootballTeam
+
+BigClubs=c(1,6,12,13,14,18)
+
+data_big=data %>% filter(FavoriteFootballTeam %in% c(1,6,12,13,14,18))
+reg1=lm(data=data_big %>% filter(Sex %in% c("Male", "Female")),Investment1~Treatment_new)
+tab_model(reg1)
+
+
+
+view_df(data)
+
+
+
+
+
+
+##### Report 
+
+
+setwd("/Users/benjamin/Downloads")
+
+library(haven)
+library(dplyr)
+library(readr)
+
+data=read_sav("Greenfoot_Survey_FullSample (1).sav")
+
+
+
+data <- data %>%
+  mutate(ID = row_number())
+# Assuming your data is in a data frame called `data`
+
+# Convert investment columns to numeric and replace NA with 0
+data$Investment1 <- as.numeric(data$Investment1)
+data$Investment1[is.na(data$Investment1)] <- 0
+
+data$Investment2 <- as.numeric(data$Investment2)
+data$Investment2[is.na(data$Investment2)] <- 0
+
+data$Investment3 <- as.numeric(data$Investment3)
+data$Investment3[is.na(data$Investment3)] <- 0
+
+data$Investment4 <- as.numeric(data$Investment4)
+data$Investment4[is.na(data$Investment4)] <- 0
+
+
+# Create group composition variable based on Treatment
+data$Condition=as.factor(data$Condition)
+data <- data %>% mutate(Treatment_new = ifelse(Treatment == "Control-Small", "Neutral-Random", Treatment))
+
+data$Treatment_new=as.factor(data$Treatment_new)
+
+
+data <- data %>%
+  mutate(
+    GroupComposition = ifelse(grepl("Club", Treatment_new), 1, ifelse(grepl("Random", Treatment_new), 0, NA)),
+    ProjectType = ifelse(grepl("Football", Treatment_new), 1, ifelse(grepl("Neutral", Treatment_new), 0, NA))
+  )
+
+data$GroupComposition=as.factor(data$GroupComposition)
+data$ProjectType=as.factor(data$ProjectType)
+data$Treatment_new <- relevel(factor(data$Treatment_new), ref = "Neutral-Random")
+
+
+names(data)
+
+
+
+
+# Rename the columns using dplyr
+data <- data %>%
+  rename(
+    Consent = Q61,                                           # Please consent to the processing of your data
+    AttentionCheck_VeryInterested = Q62_4,                   # Attention Check: Very Interested
+    AttentionCheck_NeverHeardOfIt = Q62_7,                   # Attention Check: Never Heard Of It
+    HouseholdIncome = Household_Income,                      # Household Income
+    AreaOfResidence = Q75,                                   # Area of Residence
+    EducationLevel = Q285,                                   # Highest Level of Education
+    InterestInFootball = Interest_in_Football,               # Interest in Football
+    FavoriteFootballTeam = Q1,                               # Favorite Football Team
+    Comprehension_CO2Offset = Comprehension_2,               # Comprehension: CO2 Offset
+    Comprehension_Payoff = Comprehension_1,                  # Comprehension: Payoff
+    GroupMembersCount = Q292,                                # Group Members Count
+    UnderstandingInstructions = Q92,                         # Understanding Instructions
+    CO2Offset_Question = Q218,                               # CO2 Offset Question
+    Payoff_Question = Q220,                                  # Payoff Question
+    MembersCount_UKPremiereLeagueFans = Q297,                # Members Count: UK Premiere League Fans
+    UnderstandingInstructions_UKPremiereLeague = Q223,       # Understanding Instructions: UK Premiere League
+    NeutralRandomInstr_CO2Offset = Neutral_Random_Instr,     # Neutral Random Instruction: CO2 Offset
+    NeutralRandomInstr_Payoff = Q241,                        # Neutral Random Instruction: Payoff
+    GroupMembersCount_Participants = Q300,                   # Group Members Count: Participants
+    UnderstandingInstructions_Participants = Q244,           # Understanding Instructions: Participants
+    NeutralClubInstr_CO2Offset = Neutral_Club_Instruc,       # Neutral Club Instruction: CO2 Offset
+    NeutralClubInstr_Payoff = Q262,                          # Neutral Club Instruction: Payoff
+    GroupMembersCount_DifferentUKPremiereLeagueFans = Q304,  # Group Members Count: Different UK Premiere League Fans
+    UnderstandingInstructions_DifferentUKPremiereLeagueFans = Q265,  # Understanding Instructions: Different UK Premiere League Fans
+    SimilarityToGroupMembers = Q50,                          # Similarity to Group Members
+    WillingnessToTakeRisks = Q196,                           # Willingness to Take Risks
+    WillingnessToContributeIncome = Q96,                     # Willingness to Contribute Income
+    Concern_ClimateChange = Q86,                             # Concern about Climate Change
+    Importance_SavingEnergy = Q276_1,                        # Importance of Saving Energy
+    Importance_FootballClubsEnergyEfficiency = Q276_2,       # Importance of Football Clubs' Energy Efficiency
+    Importance_ClubLeadershipInSustainability = Q276_3,      # Importance of Club Leadership in Sustainability
+    Awareness_ClubEnergyEfficiencyInitiatives = Q277_1,      # Awareness of Club's Energy Efficiency Initiatives
+    Awareness_ClubConsideringEnergyMeasures = Q277_2,        # Awareness of Club Considering Energy Measures
+    ParticipationInCrowdfunding = Q278,                      # Participation in Crowdfunding
+    LikelihoodToSupport_CrowdfundingEnergyProjects = Q279_1, # Likelihood to Support Crowdfunding Energy Projects
+    LikelihoodToInvest_ClubEnergyProjects = Q279_2,          # Likelihood to Invest in Club Energy Projects
+    LikelihoodToParticipate_CrowdfundingCampaign = Q279_3,   # Likelihood to Participate in Crowdfunding Campaign
+    Concern_MismanagementOfFunds = Q280_1,                   # Concern about Mismanagement of Funds
+    Concern_LackOfTransparency = Q280_2,                     # Concern about Lack of Transparency
+    Concern_InsufficientProjectInformation = Q280_3,         # Concern about Insufficient Project Information
+    Concern_FinancialRisk = Q280_4,                          # Concern about Financial Risk
+    Concern_Other = Q280_5,                                  # Other Concerns
+    OtherConcerns_Text = Q280_5_TEXT,                        # Other Concerns Text
+    Agreement_SenseOfCommunity = Q281_1,                     # Agreement: Sense of Community
+    Agreement_FanEngagementCrowdfunding = Q281_2,            # Agreement: Fan Engagement in Crowdfunding
+    Score = SC0,                                             # Score
+    PROLIFIC_PID = PROLIFIC_PID,                             # PROLIFIC_PID
+    Keep = Keep,                                             # Keep
+    Investment1 = Investment1,                               # Investment1
+    Investment2 = Investment2,                               # Investment2
+    Investment3 = Investment3,                               # Investment3
+    Investment4 = Investment4,                               # Investment4
+    Belief1 = Belief1,                                       # Belief1
+    Belief2 = Belief2,                                       # Belief2
+    Belief3 = Belief3,                                       # Belief3
+    Belief4 = Belief4,                                       # Belief4
+    Threshold1 = Threshold1,                                 # Threshold1
+    Threshold2 = Threshold2,                                 # Threshold2
+    Threshold3 = Threshold3,                                 # Threshold3
+    Threshold4 = Threshold4,                                 # Threshold4
+    Create_New_Field_or_Choose_From_Dropdown = Create_New_Field_or_Choose_From_Dropdown..., # Create New Field or Choose From Dropdown...
+    Bonus1 = Bonus1,                                         # Bonus1
+    Bonus2 = Bonus2,                                         # Bonus2
+    Bonus3 = Bonus3,                                         # Bonus3
+    Bonus4 = Bonus4,                                         # Bonus4
+    AverageGuess1 = AverageGuess1,                           # AverageGuess1
+    AverageGuess2 = AverageGuess2,                           # AverageGuess2
+    AverageGuess3 = AverageGuess3,                           # AverageGuess3
+    AverageGuess4 = AverageGuess4,                           # AverageGuess4
+    Treatment = Treatment,                                   # Treatment
+    Round = Round,                                           # Round
+    Condition = Condition,                                   # Condition
+    AverageGuess = averageGuess,                             # averageGuess
+    EmpiricalBelief1 = EmpiricalBelief1,                     # EmpiricalBelief1
+    NormBelief1 = NormBelief1,                               # NormBelief1
+    Treatment_new = Treatment_new,                           # Treatment_new
+    GroupComposition = GroupComposition,                     # GroupComposition
+    ProjectType = ProjectType                                # ProjectType
+  )
+
+# Calculate means and standard errors
+grouped_data <- data %>%
+  group_by(GroupComposition, ProjectType) %>%
+  summarise(
+    Mean_Investment1 = mean(Investment1),
+    SE_Investment1 = sd(Investment1) / sqrt(n()),
+    Mean_Investment2 = mean(Investment2),
+    SE_Investment2 = sd(Investment2) / sqrt(n()),
+    Mean_Investment3 = mean(Investment3),
+    SE_Investment3 = sd(Investment3) / sqrt(n()),
+    Mean_Investment4 = mean(Investment4),
+    SE_Investment4 = sd(Investment4) / sqrt(n())
+  )
+
+
+# Reshape the data for plotting
+grouped_data_long <- grouped_data %>%
+  tidyr::pivot_longer(
+    cols = starts_with("Mean_Investment"),
+    names_to = "Investment_Type",
+    values_to = "Mean"
+  ) %>%
+  mutate(
+    SE = case_when(
+      Investment_Type == "Mean_Investment1" ~ SE_Investment1,
+      Investment_Type == "Mean_Investment2" ~ SE_Investment2,
+      Investment_Type == "Mean_Investment3" ~ SE_Investment3,
+      Investment_Type == "Mean_Investment4" ~ SE_Investment4
+    )
+  )
+
+library(ggplot2)
+
+data$AverageGuess1=as.numeric(data$AverageGuess1)
+data$AverageGuess2=as.numeric(data$AverageGuess2)
+data$AverageGuess3=as.numeric(data$AverageGuess3)
+data$AverageGuess4=as.numeric(data$AverageGuess4)
+# Plot the data
+
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggimage)
+library(writexl)
+
+# Create a named vector for the club names
+club_names <- c(
+  `1` = "Arsenal",
+  `6` = "Chelsea",
+  `12` = "Liverpool",
+  `13` = "Manchester City",
+  `14` = "Manchester United",
+  `15` = "Newcastle United",
+  `18` = "Tottenham Hotspur"
+)
+
+# Define colors for each club
+club_colors <- c(
+  "Arsenal" = "#EF0107",
+  "Chelsea" = "#034694",
+  "Liverpool" = "#C8102E",
+  "Manchester City" = "#6CABDD",
+  "Manchester United" = "#DA291C",
+  "Newcastle United" = "#241F20",
+  "Tottenham Hotspur" = "#132257"
+)
+
+# Define URLs for the club logos
+club_logos <- c(
+  "Arsenal" = "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
+  "Chelsea" = "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg",
+  "Liverpool" = "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+  "Manchester City" = "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+  "Manchester United" = "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+  "Tottenham Hotspur" = "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg"
+)
+
+# Convert haven_labelled columns to standard types if necessary
+data <- data %>%
+  mutate(across(where(is.double), as.numeric))
+
+# Filter for the Football-Club treatment
+football_club <- data %>%
+  filter(Treatment_new == "Football-Club")
+
+# Ensure FavoriteFootballTeam is a factor
+football_club <- football_club %>%
+  mutate(FavoriteFootballTeam = factor(FavoriteFootballTeam))
+
+# Replace numeric club identifiers with club names
+football_club <- football_club %>%
+  mutate(FavoriteFootballTeam = recode_factor(FavoriteFootballTeam, !!!club_names))
+
+# Now you can proceed with your analysis and plotting
+# For example, creating a plot with club colors and logos at the bottom
+mean_importance_data <- football_club %>%
+  group_by(FavoriteFootballTeam) %>%
+  summarise(mean_importance = mean(Investment1, na.rm = TRUE)) %>%
+  ungroup()
+
+# Add logo URLs to the data frame, filtering out invalid URLs
+mean_importance_data <- mean_importance_data %>%
+  mutate(Logo = club_logos[FavoriteFootballTeam])
+
+# Order the clubs by the mean importance
+mean_importance_data <- mean_importance_data %>%
+  mutate(FavoriteFootballTeam = factor(FavoriteFootballTeam, levels = unique(mean_importance_data$FavoriteFootballTeam)))
+
+# Create the plot with club colors and logos at the bottom, including mean values above bars
+ggplot(mean_importance_data, aes(x = FavoriteFootballTeam, y = mean_importance, fill = FavoriteFootballTeam)) +
+  geom_bar(stat = "identity") +
+  geom_image(aes(y = -0.5, image = Logo), size = 0.08, by = "height") +
+  geom_text(aes(label = round(mean_importance, 2), y = mean_importance + 0.2), size = 4, vjust = 0) +
+  labs(title = "Average investment for 10 tonnes Carbon offseting crowdfunding project",
+       x = "Favorite Football Team",
+       y = "Mean Investment",
+       fill = "Favorite Football Team") +
+  scale_fill_manual(values = club_colors) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        text = element_text(size = 12))
+
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggimage)
+library(writexl)
+
+# Create a named vector for the club names
+club_names <- c(
+  `1` = "Arsenal",
+  `6` = "Chelsea",
+  `12` = "Liverpool",
+  `13` = "Manchester City",
+  `14` = "Manchester United",
+  `18` = "Tottenham Hotspur"
+)
+
+# Define colors for each club
+club_colors <- c(
+  "Arsenal" = "#EF0107",
+  "Chelsea" = "#034694",
+  "Liverpool" = "#C8102E",
+  "Manchester City" = "#6CABDD",
+  "Manchester United" = "#DA291C",
+  "Tottenham Hotspur" = "#132257"
+)
+
+# Define URLs for the club logos
+club_logos <- c(
+  "Arsenal" = "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
+  "Chelsea" = "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg",
+  "Liverpool" = "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+  "Manchester City" = "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+  "Manchester United" = "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+  "Tottenham Hotspur" = "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg"
+)
+
+# Convert haven_labelled columns to standard types if necessary
+data <- data %>%
+  mutate(across(where(is.double), as.numeric))
+
+# Filter for the Football-Club treatment
+football_club <- data %>%
+  filter(Treatment_new == "Football-Club")
+
+# Replace numeric club identifiers with club names
+football_club <- football_club %>%
+  mutate(FavoriteFootballTeam = recode(FavoriteFootballTeam, !!!club_names))
+
+# Transform the data into a long format for investments
+long_data <- football_club %>%
+  pivot_longer(
+    cols = starts_with("Investment"),
+    names_to = "Investment_Type",
+    values_to = "Investment_Amount"
+  )
+
+# Calculate the average contribution for each club and investment type
+average_contributions <- long_data %>%
+  group_by(FavoriteFootballTeam, Investment_Type) %>%
+  summarise(Average_Contribution = mean(Investment_Amount, na.rm = TRUE)) %>%
+  arrange(desc(Average_Contribution))
+
+# Add logo URLs to the data frame
+average_contributions <- average_contributions %>%
+  mutate(Logo = club_logos[FavoriteFootballTeam])
+
+# Order the clubs by average contribution
+average_contributions <- average_contributions %>%
+  mutate(FavoriteFootballTeam = factor(FavoriteFootballTeam, levels = unique(average_contributions$FavoriteFootballTeam)))
+
+# Function to create a plot for a given investment type
+create_plot <- function(data, investment_type, title) {
+  ggplot(data %>% filter(Investment_Type == investment_type), aes(x = FavoriteFootballTeam, y = Average_Contribution, fill = FavoriteFootballTeam)) +
+    geom_bar(stat = "identity", position = "dodge") +
+    geom_image(aes(y = 0, image = Logo), size = 0.08, by = "height", position = position_dodge(width = 0.9)) +
+    geom_text(aes(label = scales::percent(Average_Contribution / 300, accuracy = 1)), 
+              position = position_dodge(width = 0.9), vjust = -0.5, size = 3.5) +
+    labs(title = title,
+         x = "Favorite Football Team",
+         y = "Average Contribution (£)",
+         fill = "Favorite Football Team") +
+    scale_fill_manual(values = club_colors) +
+    theme_minimal() +
+    theme(
+      axis.text.y = element_blank(), 
+      axis.ticks.y = element_blank(), 
+      axis.title.y = element_blank(),
+      axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+      text = element_text(size = 12),
+      legend.position = "none"
+    )
+}
+
+# Create plots for each investment type
+plot1 <- create_plot(average_contributions, "Investment1", "Low Threshold No Bonus")
+plot2 <- create_plot(average_contributions, "Investment2", "High Threshold No Bonus")
+plot3 <- create_plot(average_contributions, "Investment3", "Low Threshold with Bonus")
+plot4 <- create_plot(average_contributions, "Investment4", "High Threshold with Bonus")
+library(gridExtra)
+# Arrange the plots in a 2x2 grid
+grid.arrange(plot1, plot2, plot3, plot4, ncol = 2)
+
+
+# Display the plots
+print(plot1)
+print(plot2)
+print(plot3)
+print(plot4)
+
+###### general crowdfudning 
+
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggimage)
+library(writexl)
+
+# Create a named vector for the club names
+club_names <- c(
+  `1` = "Arsenal",
+  `2` = "Aston Villa",
+  `3` = "Bournemouth",
+  `4` = "Brentford",
+  `5` = "Brighton & Hove Albion",
+  `6` = "Chelsea",
+  `7` = "Crystal Palace",
+  `8` = "Everton",
+  `9` = "Fulham",
+  `10` = "Leeds United",
+  `11` = "Leicester City",
+  `12` = "Liverpool",
+  `13` = "Manchester City",
+  `14` = "Manchester United",
+  `15` = "Newcastle United",
+  `16` = "Nottingham Forest",
+  `17` = "Southampton",
+  `18` = "Tottenham Hotspur",
+  `19` = "West Ham United",
+  `20` = "Wolverhampton Wanderers"
+)
+
+# Define colors for each club
+club_colors <- c(
+  "Arsenal" = "#EF0107",
+  "Aston Villa" = "#95BFE5",
+  "Bournemouth" = "#DA291C",
+  "Brentford" = "#D60000",
+  "Brighton & Hove Albion" = "#0057B8",
+  "Chelsea" = "#034694",
+  "Crystal Palace" = "#1B458F",
+  "Everton" = "#003399",
+  "Fulham" = "#000000",
+  "Leeds United" = "#FFCD00",
+  "Leicester City" = "#0053A0",
+  "Liverpool" = "#C8102E",
+  "Manchester City" = "#6CABDD",
+  "Manchester United" = "#DA291C",
+  "Newcastle United" = "#241F20",
+  "Nottingham Forest" = "#E53233",
+  "Southampton" = "#D71920",
+  "Tottenham Hotspur" = "#132257",
+  "West Ham United" = "#7A263A",
+  "Wolverhampton Wanderers" = "#FDB913"
+)
+
+# Define URLs for the club logos
+# Define URLs for the club logos
+club_logos <- c(
+  "Arsenal" = "https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
+  "Aston Villa" = "https://upload.wikimedia.org/wikipedia/de/9/9f/Aston_Villa_logo.svg",
+  "Bournemouth" = "https://upload.wikimedia.org/wikipedia/en/e/e5/AFC_Bournemouth_%282013%29.svg",
+  "Brentford" = "https://upload.wikimedia.org/wikipedia/en/2/2a/Brentford_FC_crest.svg",
+  "Brighton & Hove Albion" = "https://upload.wikimedia.org/wikipedia/en/f/fd/Brighton_%26_Hove_Albion_logo.svg",
+  "Chelsea" = "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg",
+  "Crystal Palace" = "https://upload.wikimedia.org/wikipedia/de/b/bf/Crystal_Palace_F.C._logo_%282013%29.png",
+  "Everton" = "https://upload.wikimedia.org/wikipedia/en/7/7c/Everton_FC_logo.svg",
+  "Fulham" = "https://upload.wikimedia.org/wikipedia/de/a/a8/Fulham_fc.svg",
+  "Leeds United" = "https://upload.wikimedia.org/wikipedia/en/5/54/Leeds_United_F.C._logo.svg",
+  "Leicester City" = "https://upload.wikimedia.org/wikipedia/de/b/b6/Leicester_City.svg",
+  "Liverpool" = "https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg",
+  "Manchester City" = "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
+  "Manchester United" = "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+  "Newcastle United" = "https://upload.wikimedia.org/wikipedia/en/5/56/Newcastle_United_Logo.svg",
+  "Nottingham Forest" = "https://upload.wikimedia.org/wikipedia/de/7/7e/Logo_Nottingham_Forest.svg",
+  "Southampton" = "https://upload.wikimedia.org/wikipedia/en/c/c9/FC_Southampton.svg",
+  "Tottenham Hotspur" = "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg",
+  "West Ham United" = "https://upload.wikimedia.org/wikipedia/en/c/c2/West_Ham_United_FC_logo.svg",
+  "Wolverhampton Wanderers" = "https://upload.wikimedia.org/wikipedia/en/f/fc/Wolverhampton_Wanderers.svg"
+)
+
+check_url <- function(url) {
+  tryCatch({
+    httr::GET(url)
+    TRUE
+  }, error = function(e) {
+    FALSE
+  })
+}
+
+# Verify all URLs are valid
+valid_logos <- club_logos[sapply(club_logos, check_url)]
+
+# Convert haven_labelled columns to standard types if necessary
+data <- data %>%
+  mutate(across(where(is.double), as.numeric))
+
+# Replace numeric club identifiers with club names
+data <- data %>%
+  mutate(FavoriteFootballTeam = recode(FavoriteFootballTeam, !!!club_names))
+
+
+names(data)
+data$WillingnessToContributeIncome <- recode(data$WillingnessToContributeIncome, `2` = 0)
+table(data$ParticipationInCrowdfunding)
+table(data$WillingnessToContributeIncome)
+# Calculate the mean importance of saving energy for each club
+# Calculate mean and standard error
+mean_importance_data <- data %>%
+  group_by(FavoriteFootballTeam, Treatment_new) %>%
+  summarise(
+    mean_importance = mean(Investment1, na.rm = TRUE),
+    se_importance = sd(Investment1, na.rm = TRUE) / sqrt(n())
+  ) %>%
+  ungroup()
+
+# Add logo URLs to the data frame, filtering out invalid URLs
+mean_importance_data <- mean_importance_data %>%
+  mutate(Logo = club_logos[FavoriteFootballTeam])
+
+# Order the clubs by the mean importance
+mean_importance_data <- mean_importance_data %>%
+  mutate(FavoriteFootballTeam = factor(FavoriteFootballTeam, levels = unique(mean_importance_data$FavoriteFootballTeam)))
+
+# Create the plot with club colors, logos at the bottom, and confidence intervals
+ggplot(mean_importance_data, aes(x = FavoriteFootballTeam, y = mean_importance, fill = FavoriteFootballTeam)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mean_importance - 1.96 * se_importance, ymax = mean_importance + 1.96 * se_importance), width = 0.2) +
+  geom_image(aes(y = -0.5, image = Logo), size = 0.08, by = "height") +
+  geom_text(aes(label = round(mean_importance, 2), y = mean_importance + 0.2), size = 4, vjust = 0) +
+  labs(title = "Mean Investment by Club and Treatment",
+       x = "Favorite Football Team",
+       y = "Mean Investment",
+       fill = "Favorite Football Team") +
+  scale_fill_manual(values = club_colors) +
+  theme_minimal() +
+  facet_wrap(~Treatment_new) +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        text = element_text(size = 12))
+
+
+variables_to_plot <- c(
+  "Importance_SavingEnergy",
+  "Importance_FootballClubsEnergyEfficiency",
+  "Importance_ClubLeadershipInSustainability",
+  "Awareness_ClubEnergyEfficiencyInitiatives",
+  "Awareness_ClubConsideringEnergyMeasures",
+  "ParticipationInCrowdfunding",
+  "LikelihoodToSupport_CrowdfundingEnergyProjects",
+  "LikelihoodToInvest_ClubEnergyProjects",
+  "LikelihoodToParticipate_CrowdfundingCampaign",
+  "Concern_MismanagementOfFunds",
+  "Concern_LackOfTransparency",
+  "Concern_InsufficientProjectInformation",
+  "Concern_FinancialRisk"
+)
+
+# Define a function to create plots
+create_plot <- function(data, variable, club_names, club_logos, club_colors) {
+  # Calculate the mean value for each club
+  mean_data <- data %>%
+    group_by(FavoriteFootballTeam) %>%
+    summarise(mean_value = mean(!!sym(variable), na.rm = TRUE)) %>%
+    ungroup()
+  
+  # Add logo URLs to the data frame
+  mean_data <- mean_data %>%
+    mutate(Logo = club_logos[FavoriteFootballTeam])
+  
+  # Order the clubs by the mean value
+  mean_data <- mean_data %>%
+    mutate(FavoriteFootballTeam = factor(FavoriteFootballTeam, levels = unique(mean_data$FavoriteFootballTeam)))
+  
+  # Create the plot with club colors and logos at the bottom, including mean values above bars
+  plot <- ggplot(mean_data, aes(x = FavoriteFootballTeam, y = mean_value, fill = FavoriteFootballTeam)) +
+    geom_bar(stat = "identity") +
+    geom_image(aes(y = -0.5, image = Logo), size = 0.08, by = "height") +
+    geom_text(aes(label = round(mean_value, 2), y = mean_value + 0.2), size = 6, vjust = 0) +
+    labs(title = paste("Mean", gsub("_", " ", variable), "by Club"),
+         x = "Favorite Football Team",
+         y = "Mean Value",
+         fill = "Favorite Football Team") +
+    scale_fill_manual(values = club_colors) +
+    theme_minimal() +
+    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank(),
+          axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+          text = element_text(size = 12))
+  
+  return(plot)
+}
+
+# Loop through the variables and create plots
+for (variable in variables_to_plot) {
+  plot <- create_plot(data, variable, club_names, club_logos, club_colors)
+  print(plot)
+}
+
+
+
+# Rename ProjectType and GroupComposition for clarity
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+
+data <- data %>%
+  mutate(
+    ProjectType = recode(ProjectType, `1` = "Football", `0` = "Neutral"),
+    GroupComposition = recode(GroupComposition, `1` = "Club", `0` = "Random"),
+    Bonus1 = "No",
+    Bonus2 = "No",
+    Bonus3 = "Yes",
+    Bonus4 = "Yes",
+    Threshold1 = "Low",
+    Threshold2 = "High",
+    Threshold3 = "Low",
+    Threshold4 = "High"
+  )
+
+data$ProjectType
+data$Bonus3
+
+# Combine all threshold columns into a single factor for each investment
+data_long <- data %>%
+  pivot_longer(cols = starts_with("Threshold"), names_to = "Threshold_Type", values_to = "Threshold") %>%
+  pivot_longer(cols = starts_with("Investment"), names_to = "Investment_Type", values_to = "Investment") %>%
+  pivot_longer(cols = starts_with("Bonus"), names_to = "Bonus_Type", values_to = "Bonus") %>%
+  mutate(
+    Threshold_Type = gsub("Threshold", "Investment", Threshold_Type)
+  ) %>%
+  filter(Threshold_Type == Investment_Type) %>%
+  select(-Threshold_Type)
+
+# Create a summary object with mean and standard deviation for each treatment combination
+summary_data <- data_long %>%
+  group_by(GroupComposition, ProjectType, Bonus, Threshold, Investment_Type) %>%
+  summarise(
+    Mean = mean(Investment, na.rm = TRUE),
+    SD = sd(Investment, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+# Pivot wider for better presentation in the table
+summary_data_wide <- summary_data %>%
+  pivot_wider(names_from = Investment_Type, values_from = c(Mean, SD))
+
+# Create a publishable table
+kable(summary_data_wide, format = "html", booktabs = TRUE, linesep = "") %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  column_spec(1, bold = TRUE) %>%
+  add_header_above(c(" " = 4, "Investment 1 Mean" = 1, "Investment 1 SD" = 1,
+                     "Investment 2 Mean" = 1, "Investment 2 SD" = 1,
+                     "Investment 3 Mean" = 1, "Investment 3 SD" = 1,
+                     "Investment 4 Mean" = 1, "Investment 4 SD" = 1))
+
+
+
+fan_count_data <- data %>%
+  group_by(FavoriteFootballTeam) %>%
+  summarise(fan_count = n()) %>%
+  ungroup()
+
+# Add logo URLs to the data frame, filtering out invalid URLs
+fan_count_data <- fan_count_data %>%
+  mutate(Logo = club_logos[FavoriteFootballTeam])
+
+# Order the clubs by the number of fans
+fan_count_data <- fan_count_data %>%
+  mutate(FavoriteFootballTeam = factor(FavoriteFootballTeam, levels = unique(fan_count_data$FavoriteFootballTeam)))
+
+# Create the plot with club colors, logos at the bottom, and fan counts
+ggplot(fan_count_data, aes(x = FavoriteFootballTeam, y = fan_count, fill = FavoriteFootballTeam)) +
+  geom_bar(stat = "identity") +
+  geom_image(aes(y = -5, image = Logo), size = 0.08, by = "height") +
+  geom_text(aes(label = fan_count, y = fan_count + 5), size = 4, vjust = 0) +
+  labs(title = "Number of Fans per Club",
+       x = "Favorite Football Team",
+       y = "Number of Fans",
+       fill = "Favorite Football Team") +
+  scale_fill_manual(values = club_colors) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(), axis.title.y = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
+        text = element_text(size = 12))
+
+
+
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(kableExtra)
+
+# Define the list of questions
+questions <- c("Agreement_SenseOfCommunity", 
+               "Agreement_FanEngagementCrowdfunding", 
+               "LikelihoodToSupport_CrowdfundingEnergyProjects", 
+               "LikelihoodToInvest_ClubEnergyProjects", 
+               "LikelihoodToParticipate_CrowdfundingCampaign")
+
+# Ensure each question variable is a factor with the correct levels
+data <- data %>%
+  mutate(across(all_of(questions), 
+                ~ factor(., levels = 1:5)))
+
+# Calculate the percentage for each category for each question
+percentage_data <- data %>%
+  summarise(across(all_of(questions), 
+                   ~ prop.table(table(.)) * 100))
+
+# Convert the summary into a tidy format for better presentation
+tidy_percentage_data <- percentage_data %>%
+  pivot_longer(cols = everything(), names_to = "Question", values_to = "Percentage") %>%
+  separate(Question, into = c("Question", "Response"), sep = "\\.")
+
+# Spread the responses into columns
+percentage_table <- tidy_percentage_data %>%
+  pivot_wider(names_from = Response, values_from = Percentage) %>%
+  arrange(Question)
+
+# Create a publishable table
+percentage_table %>%
+  kable(format = "html", booktabs = TRUE, linesep = "") %>%
+  kable_styling(full_width = FALSE, position = "center") %>%
+  column_spec(1, bold = TRUE) %>%
+  add_header_above(c(" " = 1, "1" = 1, "2" = 1, "3" = 1, "4" = 1, "5" = 1))
+
+
+table(data$Concern_MismanagementOfFunds)
